@@ -1,4 +1,6 @@
 //server.js
+
+//importing the necessary modules to use in the website
 const express = require('express')
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -8,7 +10,7 @@ const app = express();
 const port = 3480;
 
 
-// Where we will keep products
+// Where we will keep products after they are sent to the server
 let products = [];
 
 app.use(cors());
@@ -17,78 +19,27 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-
+//handles the get requests coming to the root url
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname+'/src/index.html'));
 });
-
+//handles the post requests sent to the server's product url.
 app.post('/product', (req, res) => {
     const product = req.body;
 
     // Output the product to the console for debugging
     console.log(product);
+    //When a product is posted it is added to the products array
     products.push(product);
-
+    //Serves the index.html file to the browser
     res.sendFile(path.join(__dirname+'/src/index.html'));
 });
-
+//handles the get requests sent to the server
 app.get('/products', (req, res) => {
+    //returns the products array in JSON format
     res.json(products);
 });
 
-
-app.listen(port, () => console.log(`Hello world app listening on port ${port}!`));
-
+app.listen(port, () => console.log(`Commerce site is listening on port: ${port}!`));
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// const http = require('http'),
-//     url = require('url'),
-//
-//     makeServer = function (request,response){
-//         let path = url.parse(request.url).pathname;
-//         console.log(path);
-//         if(path === '/'){
-//             response.writeHead(200,{'Content-Type':'text/plain'});
-//             response.write('Welcome to the Classic products website. We offer the Best!!');
-//         }
-//         else if(path === '/products'){
-//             response.writeHead(200,{'Content-Type':'text/plain'});
-//             response.write('Our products');
-//         }
-//         else if(path === '/contacts'){
-//             response.writeHead(200,{'Content-Type':'text/plain'});
-//             response.write('Our Contacts: +254*********');
-//         }
-//         else{
-//             response.writeHead(404,{'Content-Type':'text/plain'});
-//             response.write('Error page');
-//         }
-//         response.end();
-//     },
-//     server = http.createServer(makeServer);
-// server.listen(3480,()=>{
-//     console.log('access the server on http://localhost:3480');
-// });
